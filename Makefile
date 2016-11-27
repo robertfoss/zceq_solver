@@ -1,12 +1,20 @@
 CXX = clang++
-# CXX = g++
-CC = gcc
+#CXX = g++
+CC = clang
 LD = clang++
 MARCH = native
-LLVM_PROFDATA = llvm-profdata-$(shell llvm-config --version | sed -e 's/\(.\..\)\../\1/g')
+LLVM_PROFDATA = llvm-profdata-$(shell llvm-config-3.8 --version | sed -e 's/\(.\..\)\../\1/g')
 
-CXXFLAGS += -std=c++11 -march=$(MARCH) -O3 -DNDEBUG -fPIC
-CFLAGS += -std=c99 -march=$(MARCH) -O3 -DNDEBUG -fPIC
+DEBUG = -DNDEBUG -g3
+ARCH = -march=armv8-a+crc -mtune=native -mfpu=crypto-neon-fp-armv8 -mfloat-abi=hard -ftree-vectorize
+
+CXXFLAGS += -std=c++11 -O3 $(DEBUG) -fPIC $(ARCH)
+CFLAGS += -std=c99 -O3 $(DEBUG) -fPIC $(ARCH)
+
+
+#CXXFLAGS += -std=c++11 -march=$(MARCH) -O3 -DNDEBUG -fPIC
+#CFLAGS += -std=c99 -march=$(MARCH) -O3 -DNDEBUG -fPIC
+
 
 ifeq ($(NOPROFILING), 1)
 ifeq ($(USE_PROFILE_DATA), 1)
@@ -33,12 +41,14 @@ objs := zceq_solver.o \
 
 blake2_objs := blake2b-ref.o \
 	blake2b-compress-ref.o \
+	blake2b-compress-neon64.o \
 	blake2b-compress-avx2.o \
 	blake2b-compress-sse41.o \
 	blake2b-compress-ssse3.o
 
-asm_objs := blake2b-asm/zcblake2_avx2.o \
-    blake2b-asm/zcblake2_avx1.o
+asm_objs :=
+#asm_objs := blake2b-asm/zcblake2_avx2.o \
+#    blake2b-asm/zcblake2_avx1.o
 
 shared_lib_objs := lib_main.o
 

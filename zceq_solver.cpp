@@ -1008,12 +1008,12 @@ void ReductionStep<C,S>::ReportCollisionStructure(std::vector<u32>& collisions, 
     if (collisions[i] > 0) {
       u32 combinations = (u32)(i * (i - 1) / 2);
       u32 pairs = collisions[i] * combinations;
-      printf("%3ld: %8d = %d collisions * %d (%ld) combinations\n", i, pairs, collisions[i], combinations, i-1);
+      printf("%3u: %8d = %d collisions * %d (%u) combinations\n", i, pairs, collisions[i], combinations, i-1);
       total_pairs += pairs;
       total_collisions += collisions[i];
     }
   }
-  printf("total pairs: %ld (%ld) from %ld collisions (%d strings)\n",
+  printf("total pairs: %llu (%llu) from %llu collisions (%d strings)\n",
          total_pairs, (i64)total_pairs - (i64)string_count,
          total_collisions, string_count);
 }
@@ -1033,12 +1033,12 @@ void Solver::ReportStep(const char* name, bool major) {
     return;
   auto time = now();
   if (name && print_reports_) {
-    printf("[ %7ld %6ld ] %s\n", time - major_start_,time - last_report_,
+    printf("[ %7llu %6llu ] %s\n", time - major_start_,time - last_report_,
            name);
   }
   if (major) {
     if (print_reports_)
-      printf("[ %7ld        ] # ***\n", time - timer_start_);
+      printf("[ %7llu        ] # ***\n", time - timer_start_);
     major_start_ = time;
   }
   last_report_ = time;

@@ -125,7 +125,7 @@ void RunBenchmark(long long nonce_start, int iterations) {
     inputs.SetSimpleNonce(nonce_start + iter);
     solver.Reset(inputs);
     auto solutions = solver.Run();
-    printf("%2d solutions in %ldms\n", solutions, t.Micro() / 1000);
+    printf("%2d solutions in %llums\n", solutions, t.Micro() / 1000);
     // printf("\nInput processed (%ld us)\n\n\n", t.Micro());
     total_solutions += solutions;
     if ((iter + 1) % 10 == 0) {
@@ -142,7 +142,7 @@ void RunBenchmark(long long nonce_start, int iterations) {
   }
   solver.Reset(inputs);
   printf("*******************************\n");
-  printf("Total %d solutions in %ld ms\n", total_solutions, gt.Micro() / 1000);
+  printf("Total %d solutions in %llu ms\n", total_solutions, gt.Micro() / 1000);
 }
 
 }
